@@ -64,13 +64,13 @@ TECH.Chatは、ユーザーがAIとチャットを行うためのシンプルな
 3. データベースのマイグレーションを実行します。
 
     ```bash
-    python manage.py migrate
+    python src/manage.py migrate
     ```
 
 4. 開発サーバーを起動します。
 
     ```bash
-    python manage.py runserver
+    python src/manage.py runserver
     ```
 
 ## 使用方法
