@@ -1,21 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ session.name }}</title>
-</head>
-<body>
+<{% extends 'chat/base.html' %}
+
+{% block title %}{{ session.name }}{% endblock %}
+
+{% block content %}
     <h2>Chat Session: {{ session.name }}</h2>
-    <div>
+    <div id="messages">
         {% for message in messages %}
-            <p><strong>{{ message.user.username }}</strong>: {{ message.content }} <em>({{ message.created_at }})</em></p>
+            <div class="message {% if message.role == 'user' %}user-message{% else %}ai-message{% endif %}">
+                <strong>{{ message.user.username }}</strong>: {{ message.content }} <em>({{ message.created_at|date:"Y-m-d H:i:s" }})</em>
+            </div>
         {% endfor %}
     </div>
-    <form method="post">
+    <form id="chat-form" method="post" onsubmit="sendMessage(); return false;">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Send</button>
     </form>
     <p><a href="{% url 'home' %}">Back to Home</a></p>
-</body>
-</html>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function sendMessage() {
+    const form = document.getElementById('chat-form');
+    const formData = new FormData(form);
+
+    fetch('{% url "session_detail" session.id %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const messagesDiv = document.getElementById('messages');
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('message');
+            if (data.role === 'user') {
+                newMessage.classList.add('user-message');
+            } else {
+                newMessage.classList.add('ai-message');
+            }
+            newMessage.innerHTML = `<strong>${data.username}</strong>: ${data.content} <em>(${data.created_at})</em>`;
+            messagesDiv.appendChild(newMessage);
+            form.reset();
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+{% endblock %}

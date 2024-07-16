@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+
 
 from .forms import CustomUserCreationForm, ChatSessionForm, ChatMessageForm
 from .models import ChatSession, ChatMessage
@@ -55,6 +57,14 @@ def session_detail(request, session_id):
             message.user = request.user
             message.role = 'user'
             message.save()
+            if request.is_ajax():
+                return JsonResponse({
+                    'success': True,
+                    'username': message.user.username,
+                    'content': message.content,
+                    'role': message.role,
+                    'created_at': message.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                })
             return redirect('session_detail', session_id=session_id)
     else:
         form = ChatMessageForm()
