@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ session.name }}</title>
+</head>
+<body>
+    <h2>Chat Session: {{ session.name }}</h2>
+    <div>
+        {% for message in messages %}
+            <p><strong>{{ message.user.username }}</strong>: {{ message.content }} <em>({{ message.created_at }})</em></p>
+        {% endfor %}
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send</button>
+    </form>
+    <p><a href="{% url 'home' %}">Back to Home</a></p>
+</body>
+</html>

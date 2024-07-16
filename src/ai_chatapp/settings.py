@@ -127,3 +127,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # tech_chat/settings.py
 
 LOGIN_REDIRECT_URL = '/'
+
+AUTH_USER_MODEL = 'chat.User'

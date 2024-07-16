@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Chat Session</title>
+</head>
+<body>
+    <h2>Create a new Chat Session</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Session</button>
+    </form>
+    <p><a href="{% url 'home' %}">Back to Home</a></p>
+</body>
+</html>
