@@ -57,7 +57,7 @@ def session_detail(request, session_id):
             message.user = request.user
             message.role = 'user'
             message.save()
-            if request.is_ajax():
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return JsonResponse({
                     'success': True,
                     'username': message.user.username,
