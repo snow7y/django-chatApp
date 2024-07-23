@@ -3,7 +3,29 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <h1>Welcome to TECH.Chat</h1>
-    <p>You are logged in as {{ request.user.username }}</p>
-    <a class="button" href="{% url 'logout' %}">Logout</a>
+<main class="container-fluid">
+    <div class="chat-container">
+        {% include 'chat/header.html' %}
+
+        <h2>セッション作成</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button primary">Create Session</button>
+        </form>
+
+
+        <h2>セッション一覧</h2>
+        <ul class="session-list">
+            {% for session in sessions %}
+            <a href="{% url 'session_detail' session.id %}">
+                <li class="session-item" >
+                    <h3 class="session-link">{{ session.name }}</h3>
+                    <span class="session-date">(Created at: {{ session.created_at|date:"Y-m-d H:i:s" }})</span>
+                </li>
+            </a>
+            {% endfor %}
+        </ul>
+    </div>
+</main>
 {% endblock %}

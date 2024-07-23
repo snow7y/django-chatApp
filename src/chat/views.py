@@ -26,7 +26,17 @@ def signup(request):
 # ホーム
 @login_required
 def home(request):
-    return render(request, 'chat/home.html')
+    sessions = ChatSession.objects.filter(messages__user=request.user).distinct().order_by('-created_at')
+
+    if request.method == 'POST':
+        form = ChatSessionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('session_detail', session_id=form.instance.id)
+    else:
+        form = ChatSessionForm()
+
+    return render(request, 'chat/home.html', {'sessions': sessions, 'form': form})
 
 
 # セッション作成
@@ -57,6 +67,17 @@ def session_detail(request, session_id):
             message.user = request.user
             message.role = 'user'
             message.save()
+
+            # AIからの返答を追加
+            ai_message_content = get_ai_response(message.content)  # AIメッセージの生成
+            ai_message = ChatMessage(
+                session=session,
+                user=request.user,  # 将来的にはAIユーザーに変更
+                content=ai_message_content,
+                role='ai'
+            )
+            ai_message.save()
+
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return JsonResponse({
                     'success': True,
@@ -64,6 +85,12 @@ def session_detail(request, session_id):
                     'content': message.content,
                     'role': message.role,
                     'created_at': message.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                    'ai_response': {
+                        'username': 'AI',
+                        'content': ai_message.content,
+                        'role': ai_message.role,
+                        'created_at': ai_message.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                    }
                 })
             return redirect('session_detail', session_id=session_id)
     else:
@@ -74,3 +101,9 @@ def session_detail(request, session_id):
         'messages': messages,
         'form': form
     })
+
+
+def get_ai_response(user_message):
+    # AI応答を生成するロジック
+    # 将来的にはChatGPT APIを使用する予定
+    return "AIの固定応答: " + user_message

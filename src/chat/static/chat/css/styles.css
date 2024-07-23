@@ -1,3 +1,5 @@
+/* chat/static/chat/css/styles.css */
+
 body {
     background-color: #f8f8f8; /* オフホワイト */
     color: #333;
@@ -15,10 +17,21 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.chat-header {
-    text-align: center;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1rem;
+}
+.chat-header {
     color: #0056b3; /* 青色 */
+}
+.user-info {
+    display: flex;
+    align-items: center;
+}
+.user-info span {
+    margin-right: 1rem;
 }
 .chat-box {
     flex: 1;
@@ -65,4 +78,31 @@ body {
     color: #fff;
     padding: 0 0.5rem; /* パディングを調整 */
     font-size: 1rem; /* フォントサイズを調整 */
+}
+
+.session-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.session-item {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+.session-link {
+    color: #0056b3;
+    font-weight: bold;
+    text-decoration: none;
+}
+.session-link:hover {
+    text-decoration: underline;
+}
+.session-date {
+    display: block;
+    color: #666;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
 }

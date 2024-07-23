@@ -5,11 +5,12 @@
 {% block content %}
 <main class="container-fluid">
     <div class="chat-container">
+        {% include 'chat/header.html' %}
         <h1 class="chat-header">{{ session.name }}</h1>
         <div class="chat-box" id="chat-box">
             {% for message in messages %}
                 <div class="message {% if message.role == 'user' %}user{% else %}ai{% endif %}">
-                    <span><strong>{{ message.user.username }}</strong>: {{ message.content }} <em>({{ message.created_at|date:"Y-m-d H:i:s" }})</em></span>
+                    <span> {{ message.content }} <em>({{ message.created_at|date:"Y-m-d H:i:s" }})</em></span>
                 </div>
             {% endfor %}
         </div>
@@ -48,6 +49,12 @@
                     userMessage.classList.add('message', 'user');
                     userMessage.innerHTML = `<span><strong>${data.username}</strong>: ${data.content} <em>(${data.created_at})</em></span>`;
                     chatBox.appendChild(userMessage);
+
+                    // AI response
+                    const aiMessage = document.createElement('div');
+                    aiMessage.classList.add('message', 'ai');
+                    aiMessage.innerHTML = `<span><strong>${data.ai_response.username}</strong>: ${data.ai_response.content} <em>(${data.ai_response.created_at})</em></span>`;
+                    chatBox.appendChild(aiMessage);
     
                     input.value = '';
                     chatBox.scrollTop = chatBox.scrollHeight;
