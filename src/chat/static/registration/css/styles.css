@@ -1,0 +1,21 @@
+body {
+    background-color: #f8f8f8; /* オフホワイト */
+    color: #333;
+}
+.registration-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.registration-container h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #0056b3; /* 青色 */
+}
+.registration-container button {
+    background-color: #0056b3; /* 青色 */
+    color: #fff;
+}

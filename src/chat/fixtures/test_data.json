@@ -1,0 +1,52 @@
+[
+    {
+        "model": "chat.user",
+        "pk": 1,
+        "fields": {
+            "username": "testuser",
+            "password": "testpassword",
+            "email": "testuser@example.com"
+        }
+    },
+    {
+        "model": "chat.chatsession",
+        "pk": 1,
+        "fields": {
+            "name": "Test Session",
+            "created_at": "2023-07-16T00:00:00Z"
+        }
+    },
+    {
+        "model": "chat.chatmessage",
+        "pk": 1,
+        "fields": {
+            "session": 1,
+            "user": 1,
+            "content": "Hello, this is a test message.",
+            "role": "user",
+            "created_at": "2023-07-16T00:01:00Z"
+        }
+    },
+    {
+        "model": "chat.chatmessage",
+        "pk": 2,
+        "fields": {
+            "session": 1,
+            "user": 1,
+            "content": "This is another message from the user.",
+            "role": "user",
+            "created_at": "2023-07-16T00:02:00Z"
+        }
+    },
+    {
+        "model": "chat.chatmessage",
+        "pk": 3,
+        "fields": {
+            "session": 1,
+            "user": 1,
+            "content": "This is an AI response.",
+            "role": "ai",
+            "created_at": "2023-07-16T00:03:00Z"
+        }
+    }
+]
