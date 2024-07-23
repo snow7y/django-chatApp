@@ -1,0 +1,58 @@
+/* chat/static/chat/css/styles.css */
+
+body {
+    background-color: #f8f8f8; /* オフホワイト */
+    color: #333;
+}
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.login-container h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #0056b3; /* 青色 */
+}
+.login-container button {
+    background-color: #0056b3; /* 青色 */
+    color: #fff;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.user-message {
+    background-color: #e0ffe0;
+}
+
+.ai-message {
+    background-color: #e0e0ff;
+}
+
+form {
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

@@ -2,11 +2,10 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TECH.Chat | {% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-    <link rel="stylesheet" href="{% static 'chat/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'registration/css/styles.css' %}">
 </head>
 <body>
     {% block content %}{% endblock %}
