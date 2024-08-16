@@ -45,20 +45,6 @@ main_agent_info = """あなたは熟練のフロントエンジニアです。
 """
 
 
-class MainAgent(Agent):
-    def __init__(
-            self,
-            llm: AzureChatOpenAI = llm,
-            user_info: User = User(),
-            assistant_info: str = main_agent_info,
-            tools: list = main_agent_tools,
-    ):
-        super().__init__(
-            llm=llm,
-            user_info=user_info,
-            assistant_info=assistant_info,
-            tools=tools
-        )
 
 
 if __name__ == "__main__":

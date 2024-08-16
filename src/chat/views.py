@@ -6,6 +6,7 @@ from django.http import JsonResponse
 
 from .forms import CustomUserCreationForm, ChatSessionForm, ChatMessageForm
 from .models import ChatSession, ChatMessage
+import os
 
 User = get_user_model()
 
@@ -107,3 +108,15 @@ def get_ai_response(user_message):
     # AI応答を生成するロジック
     # 将来的にはChatGPT APIを使用する予定
     return "AIの固定応答: " + user_message
+
+
+def view_html(request, file_id):
+    # ファイルIDからファイルのURLを取得
+    file_url = f"http://localhost:8000/view_html/iframe/{file_id}"
+    return render(request, 'chat/view_html.html', {'file_url': file_url})
+
+def view_html_iframe(request, file_id):
+    # ファイルIDのHTMLファイルがあるか確認
+    if not os.path.exists(f"src/chat/templates/chat/generated_files/{file_id}.html"):
+        return render(request, '404.html', {'error': 'ファイルが見つかりませんでした'})
+    return render(request, f"chat/generated_files/{file_id}.html")

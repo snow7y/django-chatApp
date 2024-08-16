@@ -1,8 +1,20 @@
 <header class="header">
-    <a href="/" style="text-decoration: none;"><h1 class="chat-header">TECH.Chat</h1></a>
-    <div class="user-info">
-        <span>{{ request.user.username }}</span>
-        <a class="button outline" href="{% url 'home' %}" style="padding-right: 1rem;">Home</a>
-        <a class="button outline" href="{% url 'logout' %}">Logout</a>
-    </div>
+    <nav>
+        <ul>
+            <li>
+                <a href="/"><i  class="header-logo">TECH.Chat</i></a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                {{ request.user.username }}
+            </li>
+            <li>
+                <a href="{% url 'home' %}" class="button outline">Home</a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" class="button outline">Logout</a>
+            </li>
+        </ul>
+    </nav>
 </header>
