@@ -16,22 +16,11 @@ body {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 90vh;
 }
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-.chat-header {
+.header-logo {
     color: #0056b3; /* 青色 */
-}
-.user-info {
-    display: flex;
-    align-items: center;
-}
-.user-info span {
-    margin-right: 1rem;
+    font-size: 1.5rem;
 }
 .chat-box {
     flex: 1;
@@ -44,7 +33,7 @@ body {
 .message {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 .message.ai {
     justify-content: flex-start;
@@ -57,11 +46,11 @@ body {
     max-width: 60%;
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    background-color: #e0e0e0;
+    background-color: #7e7e7e;
+    color: #fff;
 }
 .message.user span {
     background-color: #0056b3; /* 青色 */
-    color: #fff;
 }
 .chat-input {
     display: flex;
@@ -105,4 +94,24 @@ body {
     color: #666;
     font-size: 0.875rem;
     margin-top: 0.5rem;
+}
+.view-html {
+    margin-top: 2rem;
+    color: #333;
+    text-align: center;
+}
+.iframe-container {
+    width: 100%;
+    max-width: 1000px; /* 最大幅を設定 */
+    margin: 0 auto; /* 中央揃え */
+    padding: 1rem;
+    border: 2px solid #333; /* 枠線の色を設定 */
+    border-radius: 8px; /* 角を丸める */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 影を追加 */
+    overflow: hidden; /* 枠内に収める */
+}
+iframe {
+    width: 100%;
+    height: 700px; /* 高さを調整 */
+    border: none; /* デフォルトの枠を非表示 */
 }

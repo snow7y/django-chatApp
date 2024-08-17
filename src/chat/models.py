@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from markdown import markdown
 
 
 # ユーザーモデル
@@ -35,4 +36,8 @@ class ChatMessage(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
+        self.md_to_html()
         return f'{self.user.username}: {self.content}'
+    
+    def md_to_html(self):
+        return markdown(self.content)

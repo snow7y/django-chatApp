@@ -1,0 +1,18 @@
+{% extends 'chat/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<main class="container-fluid">
+    <div class="chat-container">
+        {% include 'chat/header.html' %}
+
+        <h2 class="view-html">作成したWEBページ</h2>
+        <section>
+            <div class="iframe-container">
+                <iframe src="{{ file_url }}" allowfullscreen></iframe>
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock %}
