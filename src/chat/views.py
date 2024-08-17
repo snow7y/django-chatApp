@@ -121,7 +121,7 @@ def view_html(request, file_id):
         file_id = file_id[:-5]
 
     # ファイルIDからファイルのURLを取得
-    file_url = f"http://localhost:8000/view_html/iframe/{file_id}"
+    file_url = f"http://127.0.0.1:8000//view_html/iframe/{file_id}"
     return render(request, 'chat/view_html.html', {'file_url': file_url})
 
 def view_html_iframe(request, file_id):

@@ -23,7 +23,7 @@ def save_html_to_file(html_content, save_dir_name="generated_files"):
         file.write(html_content)
     
     # 書き込んだファイルの絶対パスを取得する
-    file_link = f"localhost:8000/view_html/{file_name}"
+    file_link = f"http://127.0.0.1:8000/view_html/{file_name}"
 
     # ファイルへのリンクを返す
     return file_link
