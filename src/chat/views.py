@@ -8,6 +8,8 @@ from .forms import CustomUserCreationForm, ChatSessionForm, ChatMessageForm
 from .models import ChatSession, ChatMessage
 import os
 
+from .chat_ai.main import add_chat_history, run_agent
+
 User = get_user_model()
 
 
@@ -63,18 +65,26 @@ def session_detail(request, session_id):
     if request.method == 'POST':
         form = ChatMessageForm(request.POST)
         if form.is_valid():
+            # もし過去にチャット履歴がある場合は追加する
+            chat_history = []
+            if messages:
+                for chat_message in messages:
+                    chat_history = add_chat_history(chat_message.role, chat_message.content, chat_history)
+            # AIからの返答を追加
             message = form.save(commit=False)
             message.session = session
             message.user = request.user
             message.role = 'user'
             message.save()
 
-            # AIからの返答を追加
-            ai_message_content = get_ai_response(message.content)  # AIメッセージの生成
+            # エージェントを実行
+            # ai_response = run_agent(message.content, chat_history)
+            
+            ai_response = run_agent(message.content, chat_history)
             ai_message = ChatMessage(
                 session=session,
                 user=request.user,  # 将来的にはAIユーザーに変更
-                content=ai_message_content,
+                content=ai_response['output'],
                 role='ai'
             )
             ai_message.save()
@@ -104,19 +114,20 @@ def session_detail(request, session_id):
     })
 
 
-def get_ai_response(user_message):
-    # AI応答を生成するロジック
-    # 将来的にはChatGPT APIを使用する予定
-    return "AIの固定応答: " + user_message
-
 
 def view_html(request, file_id):
+    # もしファイルIDが.htmlで終わっている場合は取り除く
+    if file_id.endswith(".html"):
+        file_id = file_id[:-5]
+
     # ファイルIDからファイルのURLを取得
     file_url = f"http://localhost:8000/view_html/iframe/{file_id}"
     return render(request, 'chat/view_html.html', {'file_url': file_url})
 
 def view_html_iframe(request, file_id):
     # ファイルIDのHTMLファイルがあるか確認
-    if not os.path.exists(f"src/chat/templates/chat/generated_files/{file_id}.html"):
+    file_path = f"chat/templates/chat/generated_files/{file_id}.html"
+    if not os.path.exists(file_path):
+        print(f"次のファイルが見つかりませんでした: {file_path}")
         return render(request, '404.html', {'error': 'ファイルが見つかりませんでした'})
     return render(request, f"chat/generated_files/{file_id}.html")

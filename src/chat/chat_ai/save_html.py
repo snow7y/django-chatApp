@@ -14,7 +14,7 @@ def save_html_to_file(html_content, save_dir_name="generated_files"):
     # ファイル名を作成する
     file_name = f"{unique_id}.html"
     # ディレクトリが存在しない場合は作成する
-    save_dir = os.path.join("src/chat/templates/chat", save_dir_name)
+    save_dir = os.path.join("chat/templates/chat", save_dir_name)
     os.makedirs(save_dir, exist_ok=True)
     # フルパスを作成する
     file_path = os.path.join(save_dir, file_name)
@@ -31,7 +31,7 @@ def save_html_to_file(html_content, save_dir_name="generated_files"):
 
 class SaveHtmlToFileInput(BaseModel):
     html_content: str = Field(
-        description="保存したいHTMLコンテンツの<main>タグ内のコンテンツ example: <main><h1>Hello World</h1></main>")
+        description="保存したいHTMLコンテンツ。htmlのコードのみを受け付ける example: <html><body><h1>Hello World</h1></body></html>",)
 
 
 class SaveHtmlToFileTool(BaseTool):
@@ -44,9 +44,14 @@ class SaveHtmlToFileTool(BaseTool):
             html_content: str,
     ) -> str:
         """use the tool."""
-        logger.info(f"save_html_to_file_toolが次の値で呼び出されました: {html_content}")
-        result_url = save_html_to_file(html_content)
-        return result_url
+        try:
+            print(f"save_html_to_file_toolが次の値で呼び出されました: {html_content}")
+            result_url = save_html_to_file(html_content)
+            return result_url
+        except Exception as e:
+            res = f"エラーが発生しました: {e}"
+            print(res)
+            return res
 
 
 save_html_to_file_tool = SaveHtmlToFileTool()

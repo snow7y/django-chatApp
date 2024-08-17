@@ -1,10 +1,16 @@
-from save_html import save_html_to_file_tool
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_openai import AzureChatOpenAI
+from langchain.agents import AgentExecutor
+from langchain.agents import create_tool_calling_agent
+from langchain_core.messages import HumanMessage, AIMessage
+from langchain_community.tools import DuckDuckGoSearchRun
+from .save_html import SaveHtmlToFileTool
 import os
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv(override=True)
 
-main_agent_tools = [save_html_to_file_tool]
-main_agent_info = """あなたは熟練のフロントエンジニアです。
+
+system_template = """あなたは熟練のフロントエンジニアです。
 ユーザーからの要望に応じて要件をまとめ、HTMLファイルを作成することができます。
 
 あなたがやるべきこと:
@@ -44,10 +50,64 @@ main_agent_info = """あなたは熟練のフロントエンジニアです。
 
 """
 
+prompt = ChatPromptTemplate.from_messages(
+    [
+        (
+            "system",
+            system_template,
+        ),
+        MessagesPlaceholder(variable_name="chat_history"),
+        ("user", "{input}"),
+        MessagesPlaceholder(variable_name="agent_scratchpad"),
+    ]
+)
+
+# Azure Chat OpenAIのクライアントを作成
+llm = AzureChatOpenAI(
+    azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+    azure_deployment=os.environ['AZURE_DEPLOYMENT_NAME'],  # Azureリソースのデプロイメント名
+    api_version=os.environ['OPENAI_API_VERSION'],  # azure openaiのAPIバージョン
+    temperature=0,
+    max_tokens=None,
+    timeout=None,
+    max_retries=2,
+)
+# エージェントの使用できるツール
+search = DuckDuckGoSearchRun()
+save_html_to_file_tool = SaveHtmlToFileTool()
+tools = [save_html_to_file_tool, search]
+
+
+# エージェントのもとを作成
+agent = create_tool_calling_agent(llm, tools, prompt)
+
+# エージェントがToolを実行できるようにする
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+
+
+def add_chat_history(role, input_message: str, chat_history=[]):
+    if role == "user":
+        chat_history.append(HumanMessage(input_message))
+    else:
+        chat_history.append(AIMessage(input_message))
+    return chat_history
+
+
+def run_agent(input_message: str, chat_history=[]) -> dict:
+    try:
+        print(f"次の値でエージェントを実行します: {input_message}, chat_history: {chat_history}")
+        return agent_executor.invoke({"input": input_message, "chat_history": chat_history})
+    except Exception as e:
+        print(f"エラーが発生しました: {e}")
+        return {'output': 'エラーが発生しました'}
 
 
 
 if __name__ == "__main__":
-    main_agent = MainAgent()
-    print(main_agent.get_agent_info())
-    print(main_agent.invoke("簡単なブログサイトを作成してください。"))
+    input_message = "要件はブログのタイトルと最終更新日時、概要をカード形式で表示するような感じです。デザインはシンプルで見やすいものがいいです。"
+    chat_history = add_chat_history("user", 'ブログサイトを作成して')
+    chat_history = add_chat_history(
+        "ai", 'ブログサイトを作成するための要件を教えてください。どのような機能やデザインが必要ですか？', chat_history)
+    result = run_agent(input_message, chat_history)
+    print(result)
+    print(result['output'])
