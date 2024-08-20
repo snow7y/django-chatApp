@@ -68,37 +68,6 @@ body {
     padding: 0 0.5rem; /* パディングを調整 */
     font-size: 1rem; /* フォントサイズを調整 */
 }
-
-.session-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-.session-item {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fafafa;
-}
-.session-link {
-    color: #0056b3;
-    font-weight: bold;
-    text-decoration: none;
-}
-.session-link:hover {
-    text-decoration: underline;
-}
-.session-date {
-    display: block;
-    color: #666;
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
-}
-.session-delete {
-    display: inline-block;
-    margin-top: 0.5rem;
-}
 .view-html {
     margin-top: 2rem;
     color: #333;
