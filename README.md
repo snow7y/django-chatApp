@@ -72,7 +72,7 @@ TECH.Chatは、ユーザーがAIとチャットを行うためのシンプルな
 4. 開発サーバーを起動します。
 
     ```bash
-    python manage.py runserver
+    python src/manage.py runserver
     ```
 
 ## 使用方法
