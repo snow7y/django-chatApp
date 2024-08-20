@@ -17,7 +17,7 @@
             <form class="chat-input" id="chat-form" method="post" onsubmit="sendMessage(); return false;" >
                 {% csrf_token %}
                 <input type="text" id="chat-input" name="content" placeholder="メッセージを入力...">
-                <button type="submit">&#10145;</button>
+                <button type="submit" id="chat-button" aria-busy="false">&#10145;</button>
             </form>
     </div>
 </main>
@@ -30,6 +30,9 @@
         const message = input.value.trim();
         if (message !== '') {
             const form = document.getElementById('chat-form');
+            // フォームの中のbutton要素を取得して、aria-busy属性をtrueに設定
+            const button = document.getElementById('chat-button');
+            button.setAttribute('aria-busy', 'true');
             const formData = new FormData(form);
     
             fetch('{% url "session_detail" session.id %}', {

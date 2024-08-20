@@ -4,9 +4,16 @@ body {
     background-color: #f8f8f8; /* オフホワイト */
     color: #333;
     margin: 0;
-    height: 100vh;
     display: flex;
     flex-direction: column;
+}
+.homecontainer {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .chat-container {
     flex: 1;
@@ -16,7 +23,7 @@ body {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-height: 90vh;
+    max-height: 85vh;
 }
 .header-logo {
     color: #0056b3; /* 青色 */
