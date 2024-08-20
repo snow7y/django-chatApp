@@ -1,40 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TECH.Chat | Logout</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-    <style>
-        body {
-            background-color: #f8f8f8; /* オフホワイト */
-            color: #333;
-        }
-        .logout-container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 2rem;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .logout-container h1 {
-            text-align: center;
-            margin-bottom: 1rem;
-            color: #0056b3; /* 青色 */
-        }
-        .logout-container button {
-            background-color: #0056b3; /* 青色 */
-            color: #fff;
-        }
-    </style>
-</head>
-<body>
+{% extends 'registration/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
     <main class="container">
-        <div class="logout-container">
+        <div class="registration-container">
             <h1>ログアウトしました</h1>
             <p>もう一度ログインする <a href="{% url 'login' %}">Login</a></p>
         </div>
     </main>
-</body>
-</html>
+{% endblock %}

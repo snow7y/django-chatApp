@@ -52,10 +52,11 @@ TECH.Chatは、ユーザーがAIとチャットを行うためのシンプルな
 1. リポジトリをクローンします。
 
     ```bash
-    git clone https://github.com/yourusername/tech-chat.git
+    git clone https://github.com/yukikimoto/django-chatApp.git
     ```
 
 2. 必要なパッケージをインストールします。
+   できるだけ仮想環境で行うようにしてください。
 
     ```bash
     pip install -r requirements.txt
@@ -64,7 +65,8 @@ TECH.Chatは、ユーザーがAIとチャットを行うためのシンプルな
 3. データベースのマイグレーションを実行します。
 
     ```bash
-    python src/manage.py migrate
+    cd src
+    python manage.py migrate
     ```
 
 4. 開発サーバーを起動します。
@@ -77,4 +79,5 @@ TECH.Chatは、ユーザーがAIとチャットを行うためのシンプルな
 
 1. ブラウザを開き、`http://127.0.0.1:8000`にアクセスします。
 2. アカウントを作成し、ログインします。
-3. AIとチャットを開始し、チャット履歴を管理します。
+3. Azure OpenAI のAPIを使用してAIと会話することを想定としているので次の[docs/azure-openai.md](docs/azure-openai.md)を参考に環境変数を設定してください。されていない場合はダミーのデータを返す形にしています。
+4. AIとチャットを開始し、チャット履歴を管理します。

@@ -1,0 +1,67 @@
+{% extends 'chat/base.html' %}
+
+{% block title %}{{ session.name }}{% endblock %}
+
+{% block content %}
+<main class="container-fluid">
+    <div class="chat-container">
+        {% include 'chat/header.html' %}
+        <h1 class="chat-header">{{ session.name }}</h1>
+        <div class="chat-box" id="chat-box">
+            {% for message in messages %}
+                <div class="message {% if message.role == 'user' %}user{% else %}ai{% endif %}">
+                    <span> {{ message.md_to_html | safe }} <sub>({{ message.created_at|date:"Y-m-d H:i:s" }})</sub></span>
+                </div>
+            {% endfor %}
+        </div>
+            <form class="chat-input" id="chat-form" method="post" onsubmit="sendMessage(); return false;" >
+                {% csrf_token %}
+                <input type="text" id="chat-input" name="content" placeholder="メッセージを入力...">
+                <button type="submit">&#10145;</button>
+            </form>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const message = input.value.trim();
+        if (message !== '') {
+            const form = document.getElementById('chat-form');
+            const formData = new FormData(form);
+    
+            fetch('{% url "session_detail" session.id %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const chatBox = document.getElementById('chat-box');
+                    
+                    // User message
+                    const userMessage = document.createElement('div');
+                    userMessage.classList.add('message', 'user');
+                    userMessage.innerHTML = `<span><strong>${data.username}</strong>: ${data.content} <em>(${data.created_at})</em></span>`;
+                    chatBox.appendChild(userMessage);
+
+                    // AI response
+                    const aiMessage = document.createElement('div');
+                    aiMessage.classList.add('message', 'ai');
+                    aiMessage.innerHTML = `<span><strong>${data.ai_response.username}</strong>: ${data.ai_response.content} <em>(${data.ai_response.created_at})</em></span>`;
+                    chatBox.appendChild(aiMessage);
+    
+                    input.value = '';
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+</script>
+{% endblock %}
