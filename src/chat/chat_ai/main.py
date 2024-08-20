@@ -7,7 +7,22 @@ from langchain_community.tools import DuckDuckGoSearchRun
 from .save_html import SaveHtmlToFileTool
 import os
 from dotenv import load_dotenv
-load_dotenv(override=True)
+
+try:
+    load_dotenv(override=True)
+    # Azure Chat OpenAIのクライアントを作成
+    llm = AzureChatOpenAI(
+        azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+        azure_deployment=os.environ['AZURE_DEPLOYMENT_NAME'],  # Azureリソースのデプロイメント名
+        api_version=os.environ['OPENAI_API_VERSION'],  # azure openaiのAPIバージョン
+        temperature=0,
+        max_tokens=None,
+        timeout=None,
+        max_retries=2,
+    )
+except Exception as e:
+    print(f"環境変数を読み込めませんでした: {e}")
+    llm = None
 
 
 system_template = """あなたはプロフェッショナルなフロントエンドエンジニアとして、ユーザーの要望に基づいて高品質なHTMLファイルを作成します。以下の手順とルールに従って作業を進めてください。
@@ -72,27 +87,16 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-# Azure Chat OpenAIのクライアントを作成
-llm = AzureChatOpenAI(
-    azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
-    azure_deployment=os.environ['AZURE_DEPLOYMENT_NAME'],  # Azureリソースのデプロイメント名
-    api_version=os.environ['OPENAI_API_VERSION'],  # azure openaiのAPIバージョン
-    temperature=0,
-    max_tokens=None,
-    timeout=None,
-    max_retries=2,
-)
+
 # エージェントの使用できるツール
 search = DuckDuckGoSearchRun()
 save_html_to_file_tool = SaveHtmlToFileTool()
 tools = [save_html_to_file_tool, search]
 
 
-# エージェントのもとを作成
-agent = create_tool_calling_agent(llm, tools, prompt)
 
-# エージェントがToolを実行できるようにする
-agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+
+
 
 
 def add_chat_history(role, input_message: str, chat_history=[]):
@@ -105,9 +109,17 @@ def add_chat_history(role, input_message: str, chat_history=[]):
 
 def run_agent(input_message: str, chat_history=[]) -> dict:
     try:
+        if llm is None:
+            return {'output': '環境変数が設定されていません。設定しなおしたうえで再起動してください。'}
         print(
             f"次の値でエージェントを実行します: {input_message}, chat_history: {chat_history}")
+        
+        # エージェントのもとを作成
+        agent = create_tool_calling_agent(llm, tools, prompt)
+        # エージェントがToolを実行できるようにする
+        agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
         return agent_executor.invoke({"input": input_message, "chat_history": chat_history})
+    
     except Exception as e:
         print(f"エラーが発生しました: {e}")
         return {'output': 'エラーが発生しました'}
