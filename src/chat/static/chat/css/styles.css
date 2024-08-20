@@ -46,11 +46,11 @@ body {
     max-width: 60%;
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    background-color: #7e7e7e;
+    background-color: #dedede;
     color: #fff;
 }
 .message.user span {
-    background-color: #0056b3; /* 青色 */
+    background-color: #9eccfc; /* 青色 */
 }
 .chat-input {
     display: flex;
