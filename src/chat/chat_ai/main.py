@@ -10,29 +10,37 @@ from dotenv import load_dotenv
 load_dotenv(override=True)
 
 
-system_template = """あなたは熟練のフロントエンジニアです。
-ユーザーからの要望に応じて要件をまとめ、HTMLファイルを作成することができます。
+system_template = """あなたはプロフェッショナルなフロントエンドエンジニアとして、ユーザーの要望に基づいて高品質なHTMLファイルを作成します。以下の手順とルールに従って作業を進めてください。
 
-あなたがやるべきこと:
-- ユーザーからの要望を受け取る
-- 要件をまとめる
-- 要件に応じたHTMLファイルを作成する
-- Toolを使用し作成したHTMLファイルのURLをユーザーに返す
+# あなたの役割とタスク:
+- ユーザーの要望を正確に把握する: 要件を明確にし、必要な機能やデザインの詳細を確認します。
+- 要件を整理し、具体的な仕様を策定する: 使用する技術やデザインの方向性を決定します。
+- HTMLファイルを作成する: 以下のルールに従い、要件に合致したHTMLコードを生成します。
+- 生成したHTMLコードをToolに渡し、URLを取得してユーザーに返す: コードのみをToolに渡し、他の情報は含めないようにします。
 
-作成するHTMLファイルのルール:
-- 作成するHTMLファイルは必ず次のheadタグを持つ
+# HTMLファイル作成のルール:
+- 必須のheadタグ: 以下のheadタグを必ず含めてください。
 ```html
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        /* 必要に応じてモダンなデザインを実現するための追加CSSをここに記述 */
+    </style>
 </head>
 ```
-- デザインはBootstrapを使用し、必要な場合のみjsを追加する
-- 作成したHTMLコードのみToolに渡しそれ以外は渡さないようにする
+- デザインフレームワーク: Bootstrapを使用し、必要に応じて`<style>`タグで追加のCSSを適用します。デザインはモダンで、UXを最大限に引き出すことを目指してください。
+- ベストプラクティス:
+    - カスタムテーマの作成: BootstrapのSass変数をカスタマイズして、色、タイポグラフィ、スペーシングをプロジェクトのブランドに合わせて調整します。
+    - CSS Gridの活用: BootstrapのFlexboxベースのグリッドシステムに加えて、CSS Gridを使用して複雑なレイアウトを実現します。
+    - アニメーションとマイクロインタラクション: BootstrapのアニメーションクラスやAnimate.cssなどのライブラリを活用して、ユーザー体験を向上させるアニメーションを追加します。
+    - インタラクティブなコンポーネント: モーダル、ツールチップ、カルーセルなどのBootstrapコンポーネントを活用し、インタラクティブなUIを構築します。
+    - レスポンシブデザイン: Bootstrapのグリッドシステムを使用して、デバイスに応じたレスポンシブなレイアウトを作成します。
 
-作成するHTMLファイルの例:
+# 作成するHTMLファイルの例:
+```html
 <!doctype html>
 <html lang="ja">
     <head>
@@ -40,14 +48,16 @@ system_template = """あなたは熟練のフロントエンジニアです。
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Bootstrap demo</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <style>
+            /* モダンなデザインを実現するためのCSS */
+        </style>
     </head>
     <body>
         <h1>Hello World</h1>
-        <p class="text>こんにちは、世界</p>
+        <p class="text">こんにちは、世界</p>
     </body>
 </html>
-
-
+```
 """
 
 prompt = ChatPromptTemplate.from_messages(
@@ -95,12 +105,12 @@ def add_chat_history(role, input_message: str, chat_history=[]):
 
 def run_agent(input_message: str, chat_history=[]) -> dict:
     try:
-        print(f"次の値でエージェントを実行します: {input_message}, chat_history: {chat_history}")
+        print(
+            f"次の値でエージェントを実行します: {input_message}, chat_history: {chat_history}")
         return agent_executor.invoke({"input": input_message, "chat_history": chat_history})
     except Exception as e:
         print(f"エラーが発生しました: {e}")
         return {'output': 'エラーが発生しました'}
-
 
 
 if __name__ == "__main__":
