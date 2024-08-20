@@ -95,6 +95,10 @@ body {
     font-size: 0.875rem;
     margin-top: 0.5rem;
 }
+.session-delete {
+    display: inline-block;
+    margin-top: 0.5rem;
+}
 .view-html {
     margin-top: 2rem;
     color: #333;

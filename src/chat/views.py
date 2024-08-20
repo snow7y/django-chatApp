@@ -54,6 +54,12 @@ def create_session(request):
         form = ChatSessionForm()
     return render(request, 'chat/create_session.html', {'form': form})
 
+@login_required
+def delete_session(request, session_id):
+    session = ChatSession.objects.get(id=session_id)
+    session.delete()
+    return redirect('home')
+
 
 
 # セッション詳細
