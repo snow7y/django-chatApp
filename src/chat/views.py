@@ -86,7 +86,8 @@ def session_detail(request, session_id):
             # エージェントを実行
             # ai_response = run_agent(message.content, chat_history)
             
-            ai_response = run_agent(message.content, chat_history)
+            ai_response = run_agent(message.content, chat_history, dummy=True) # dummy=Trueでエラーを発生させLLMの料金を節約
+            # ai_response = run_agent(message.content, chat_history)
             ai_message = ChatMessage(
                 session=session,
                 user=request.user,  # 将来的にはAIユーザーに変更

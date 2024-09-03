@@ -116,10 +116,14 @@ def add_chat_history(role, input_message: str, chat_history=[]):
     return chat_history
 
 
-def run_agent(input_message: str, chat_history=[]) -> dict:
+def run_agent(input_message: str, chat_history=[], dummy: bool= False) -> dict:
     try:
         if llm is None:
             return {'output': '環境変数が設定されていません。設定しなおしたうえで再起動してください。'}
+        if dummy == True:
+            from time import sleep
+            sleep(2)
+            return {'output': 'これはダミーのレスポンスです。実際のやり取りを行いたい場合はdummy=Falseにしてください。'}
         print(
             f"次の値でエージェントを実行します: {input_message}, chat_history: {chat_history}")
         
